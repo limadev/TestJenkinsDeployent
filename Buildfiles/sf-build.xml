@@ -1,0 +1,46 @@
+<project name="iConnect SFDC Deployment" basedir="." xmlns:sf="antlib:com.salesforce">
+
+	<!-- ========================================== -->
+	<!-- Default properties                         -->
+	<!-- ========================================== -->
+	<property file="${org}sf-build.properties"/>
+	<property name="src.dir" value="../src"/>
+	<property name="src_env.dir" value="../src_env"/>
+	
+	<!-- ========================================== -->
+	<!-- Deployment targets                         -->
+	<!-- ========================================== -->
+	<target name="deploy_metadata">
+		<sf:deploy username="${sf.deploy.username}${org}" password="${sf.deploy.password}" serverurl="${sf.deploy.serverurl}" deployRoot="${src.dir}" maxPoll="${sf.maxPoll}" pollWaitMillis="${sf.pollWaitMillis}"  runAllTests="${sf.runAllTests}" />
+	</target>
+
+	<target name="deploy_metadata_org_specific">	
+		<sf:deploy username="${sf.deploy.username}${org}" password="${sf.deploy.password}" serverurl="${sf.deploy.serverurl}" deployRoot="${src_env.dir}/${org}" maxPoll="${sf.maxPoll}" pollWaitMillis="${sf.pollWaitMillis}" runAllTests="${sf.runAllTests}" />
+	</target>
+
+	<target name="RetrieveMetadata">
+
+		<mkdir dir="..\Exports"/>
+      <!-- Retrieve the contents into another directory -->
+      
+		<sf:retrieve username="${sf.deploy.username}${org}" password="${sf.deploy.password}" serverurl="${sf.deploy.serverurl}" retrieveTarget="..\Exports" unpackaged="..\build\Backups\Package.xml" maxPoll ="200" unzip="False"/>
+    
+	</target>
+	
+	<target name="RetriveCaseAssignmentrules">
+      <!-- Retrieve the contents listed in the file /RetiveCaseAssignmentRulesPackage.xml into the src directory -->
+      <sf:retrieve username="${sf.deploy.username}${org}" password="${sf.deploy.password}" serverurl="${sf.deploy.serverurl}" maxPoll="${sf.maxPoll}" retrieveTarget="../src" unpackaged="RetiveCaseAssignmentRulesPackage.xml"/>
+    </target>
+	
+	<target name="describeMetadata">
+      <!-- Retrieve the contents listed in the file /RetiveCaseAssignmentRulesPackage.xml into the src directory -->
+      <sf:describeMetadata username="${sf.deploy.username}${org}" password="${sf.deploy.password}" serverurl="${sf.deploy.serverurl}" resultFilePath="describe.log"/>
+    </target>
+
+	<target name="listMetadata">
+      <!-- Retrieve the contents listed in the file /RetiveCaseAssignmentRulesPackage.xml into the src directory -->
+      <sf:listMetadata username="${sf.deploy.username}${org}" password="${sf.deploy.password}" serverurl="${sf.deploy.serverurl}" metadataType="CustomField" resultFilePath="ListCustomFields.log"/>
+    </target>
+	
+</project>
+    
