@@ -10,6 +10,11 @@
 	<!-- ========================================== -->
 	<!-- Deployment targets                         -->
 	<!-- ========================================== -->
+	<taskdef resource="com/salesforce/antlib.xml" uri="antlib:com.salesforce">
+	<classpath>
+		<pathelement location="ant-salesforce.jar"/>
+	</classpath>
+	</taskdef>
 	<target name="deploy_metadata">
 		<sf:deploy username="${sf.deploy.username}${org}" password="${sf.deploy.password}" serverurl="${sf.deploy.serverurl}" deployRoot="${src.dir}" maxPoll="${sf.maxPoll}" pollWaitMillis="${sf.pollWaitMillis}"  runAllTests="${sf.runAllTests}" />
 	</target>
